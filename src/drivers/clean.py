@@ -1,6 +1,6 @@
 import argparse
 from argparse import Namespace
-from src.general.operations.dataframe_operations import load_dataframe, save_dataframe
+from src.general.operations.dataframe_operations import load_dataframe_from_csv, save_dataframe
 from src.bicimad.operations.cleaning_operations import *
 
 from src.bicimad.constants.paths import *
@@ -12,8 +12,8 @@ def create_path(home_path: str, relative_path: str) -> str:
 
 
 def runner(args: Namespace) -> None:
-    df_bikes = load_dataframe(create_path(args.home_path, path_bikes_raw))
-    df_bikes = clean(df_bikes)
+    df_bikes = load_dataframe_from_csv(create_path(args.home_path, path_bikes_raw))
+    df_bikes = clean_bikes_data(df_bikes)
     save_dataframe(df_bikes, create_path(args.home_path, path_bikes_clean))
 
 
