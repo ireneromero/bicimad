@@ -19,5 +19,5 @@ def add_weather_data_per_day(df: pd.DataFrame, df_weather: pd.DataFrame) -> pd.D
 def prepare_daily_data(df: pd.DataFrame, df_weather: pd.DataFrame) -> pd.DataFrame:
     df_rides_per_day = preprocess_rides_per_day(df)
     df_daily = add_weather_data_per_day(df_rides_per_day, df_weather)
-    return df_daily
+    return df_daily.drop(COL_BIKES_DATE, axis=1)
 

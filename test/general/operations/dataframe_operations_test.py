@@ -6,9 +6,9 @@ from src.bicimad.constants.weather_constants import *
 
 class DataFrameOperationsTest(unittest.TestCase):
 
-    PATH_BIKES = '../../../' + path_bikes_raw
-    PATH_WEATHER = '../../../' + path_aemet_per_day
-    PATH_BIKES_CLEAN = '../../../' + path_bikes_clean
+    PATH_BIKES = '../../../' + PATH_BIKES_RAW
+    PATH_WEATHER = '../../../' + PATH_AEMET_PER_DAY
+    PATH_BIKES_CLEAN = '../../../' + PATH_BIKES_CLEAN
 
     def test_load_dataframe_from_csv(self):
         df_bikes = load_dataframe_from_csv(self.PATH_BIKES)

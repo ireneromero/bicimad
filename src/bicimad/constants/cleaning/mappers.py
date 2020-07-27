@@ -1,4 +1,4 @@
-stations_dict = {
+STATIONS_DICT = {
     '1': '001a',
     '111': '111a',
     '116': '116a',
@@ -7,7 +7,7 @@ stations_dict = {
     '80': '080a'
 }
 
-day_of_week_dict = {
+DAY_OF_WEEK_DICT = {
     0: 'Mon',
     1: 'Tue',
     2: 'Wed',

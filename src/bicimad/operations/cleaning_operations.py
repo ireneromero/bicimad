@@ -30,7 +30,7 @@ def transform_types_bikes(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def clean_station(station: str) -> str:
-    return src.bicimad.constants.cleaning.mappers.stations_dict.get(station, station)
+    return src.bicimad.constants.cleaning.mappers.STATIONS_DICT.get(station, station)
 
 
 def clean_stations(df: pd.DataFrame) -> pd.DataFrame:
@@ -43,7 +43,7 @@ def clean_stations(df: pd.DataFrame) -> pd.DataFrame:
 
 def clean_date_bikes(df: pd.DataFrame) -> pd.DataFrame:
     df[COL_BIKES_DAY_OF_WEEK] = df[COL_BIKES_UNPLUG_TIMESTAMP].dt.dayofweek\
-        .map(src.bicimad.constants.cleaning.mappers.day_of_week_dict)
+        .map(src.bicimad.constants.cleaning.mappers.DAY_OF_WEEK_DICT)
     df[COL_BIKES_HOUR] = df[COL_BIKES_UNPLUG_TIMESTAMP].dt.hour
     df[COL_BIKES_MONTH] = df[COL_BIKES_UNPLUG_TIMESTAMP].dt.month
     df[COL_BIKES_DAY] = df[COL_BIKES_UNPLUG_TIMESTAMP].dt.day

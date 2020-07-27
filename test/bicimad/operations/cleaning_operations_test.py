@@ -9,8 +9,8 @@ from src.general.operations.dataframe_operations import load_dataframe_from_csv,
 
 class CleaningOperationsTest(unittest.TestCase):
 
-    PATH_BIKES = '../../../' + path_bikes_raw
-    PATH_WEATHER = '../../../' + path_aemet_per_day
+    PATH_BIKES = '../../../' + PATH_BIKES_RAW
+    PATH_WEATHER = '../../../' + PATH_AEMET_PER_DAY
     df_bikes = load_dataframe_from_csv(PATH_BIKES)
     df_weather = load_dataframe_from_json(PATH_WEATHER)
 

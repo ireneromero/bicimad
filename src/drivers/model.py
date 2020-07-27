@@ -15,21 +15,12 @@ def create_path(home_path: str, relative_path: str) -> str:
 
 
 def runner(args: Namespace) -> None:
-    df_bikes_clean = load_dataframe_from_csv(create_path(args.home_path, PATH_BIKES_CLEAN), parse_dates=[COL_BIKES_DATE])
-    df_weather = load_dataframe_from_json(create_path(args.home_path, PATH_AEMET_PER_DAY), parse_dates=[COL_WEATHER_DATE])
-    df_weather = clean_weather_data(df_weather)
-    if args.sampling_frequency == 'daily': # extract daily/hourly value as constant
-        df_prepared = prepare_daily_data(df_bikes_clean, df_weather)
-    elif args.sampling_frequency == 'hourly':
-        # TODO
-        pass
-    # TODO implement else, return error
-    save_dataframe(df_prepared, create_path(args.home_path, PATH_DATASET.get(args.sampling_frequency)))
+    dataset = load_dataframe_from_csv(create_path(args.home_path, PATH_DATASET.get(args.sampling_frequency)))
 
 
 def main():
     # args: --home-path /home/irene/dev/keepler-prueba/keepler-bicimad --sampling-frequency daily
-    print("[data-preparation] Starting ... ")
+    print("[data-modeling] Starting ... ")
     parser = argparse.ArgumentParser(description='[BiciMad Project] Data Cleaning')
     parser.add_argument('--home-path', type=str, default='.', metavar='H',
                         help='home path')
@@ -37,10 +28,10 @@ def main():
                         help='Sampling frequency of data: daily/hourly ')
 
     args: Namespace = parser.parse_args()
-    print("[data-preparation] Setting home path as: {}".format(args.home_path))
-    print("[data-preparation] Preparing [{}] data".format(args.sampling_frequency))
+    print("[data-modeling] Setting home path as: {}".format(args.home_path))
+    print("[data-modeling] Preparing [{}] data".format(args.sampling_frequency))
     runner(args)
-    print("[data-preparation] Success: Prepared data stored in {}.".format(create_path(args.home_path, PATH_DATASET.get(args.sampling_frequency))))
+    print("[data-modeling] Success: Prepared data stored in {}.".format(create_path(args.home_path, PATH_DATASET.get(args.sampling_frequency))))
 
 
 if __name__ == '__main__':

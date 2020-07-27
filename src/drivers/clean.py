@@ -12,9 +12,9 @@ def create_path(home_path: str, relative_path: str) -> str:
 
 
 def runner(args: Namespace) -> None:
-    df_bikes = load_dataframe_from_csv(create_path(args.home_path, path_bikes_raw))
+    df_bikes = load_dataframe_from_csv(create_path(args.home_path, PATH_BIKES_RAW))
     df_bikes = clean_bikes_data(df_bikes)
-    save_dataframe(df_bikes, create_path(args.home_path, path_bikes_clean))
+    save_dataframe(df_bikes, create_path(args.home_path, PATH_BIKES_CLEAN))
 
 
 def main():
@@ -27,7 +27,7 @@ def main():
     print("[data-cleaning] Setting home path as: {}".format(args.home_path))
 
     runner(args)
-    print("[data-cleaning] Success: Clean data stored in {}.".format(create_path(args.home_path, path_bikes_clean)))
+    print("[data-cleaning] Success: Clean data stored in {}.".format(create_path(args.home_path, PATH_BIKES_CLEAN)))
 
 
 if __name__ == '__main__':
