@@ -1,3 +1,3 @@
 # keepler-bicimad
 
-My attempt at resolving the bicimad challenge.
+My attempt at solving the bicimad challenge.
