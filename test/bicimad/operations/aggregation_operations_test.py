@@ -1,11 +1,14 @@
 import unittest
+import numpy as np
 
-from src.bicimad.constants.bikes_constants import *
-from src.bicimad.constants.weather_constants import *
-from src.bicimad.constants.paths import *
-from src.bicimad.operations.cleaning_operations import transform_types_bikes, remove_outliers_travel_time, clean_date_bikes, UPPER_QUANTILE, LOWER_QUANTILE
-from src.general.operations.dataframe_operations import load_dataframe_from_csv, load_dataframe_from_json
-from src.bicimad.operations.aggregation_operations import preprocess_rides_per_day, add_weather_data_per_day, prepare_daily_data
+
+from bicimad.constants.bikes_constants import *
+from bicimad.constants.weather_constants import *
+from bicimad.constants.paths import *
+from bicimad.operations.cleaning_operations import transform_types_bikes, remove_outliers_travel_time, clean_date_bikes, UPPER_QUANTILE, LOWER_QUANTILE
+from general.operations.dataframe_operations import load_dataframe_from_csv, load_dataframe_from_json
+from bicimad.operations.aggregation_operations import preprocess_rides_per_day, preprocess_rides_per_hour, add_weather_data_per_day, prepare_daily_data, \
+    get_temperature_model, get_temperature_simple, get_hourly_weather, add_mean_rides_for_day
 
 #TODO tests are only valid for current data. Create data folder inside test folder to provide test reproducibility.
 
@@ -22,6 +25,20 @@ class AggregationOperationsTest(unittest.TestCase):
         self.assertEqual(df_rides_per_day.shape[0], expected_size)
         self.assertIn(COL_BIKES_RIDES, df_rides_per_day.columns)
 
+    def test_preprocess_rides_per_hour(self):
+        df_rides_per_hour = preprocess_rides_per_hour(self.df_bikes)
+        expected_size = 656
+        self.assertIn(COL_BIKES_RIDES, df_rides_per_hour.columns)
+        self.assertIn(COL_BIKES_HOUR, df_rides_per_hour.columns)
+        self.assertEqual(df_rides_per_hour.shape[0], expected_size)
+
+    def test_add_mean_rides_for_day(self):
+        df_rides_per_day = preprocess_rides_per_day(self.df_bikes)
+        dd = add_mean_rides_for_day(df_rides_per_day)
+        self.assertEqual(0, 0)
+
+
+
     def test_add_weather_data_per_day(self):
         df_rides_per_day = preprocess_rides_per_day(self.df_bikes)
         df_with_weather = add_weather_data_per_day(df_rides_per_day, self.df_weather)
@@ -33,3 +50,18 @@ class AggregationOperationsTest(unittest.TestCase):
         dataset = prepare_daily_data(self.df_bikes, self.df_weather)
         self.assertNotIn(COL_BIKES_DATE, dataset.columns)
 
+    def test_get_temperature_model(self):
+        model = get_temperature_model(20, 24, 10, 12)
+        print(model.predict(np.array(11.0).reshape(1, -1)))
+        self.assertAlmostEqual(model.coef_[0], 2.0)
+        self.assertAlmostEqual(model.intercept_, 0.0)
+
+    def test_get_temperature_simple(self):
+        expected_value = 20.0
+        self.assertEqual(expected_value, get_temperature_simple(7, 20, 15, 35, 6, 14))
+
+    def test_get_hourly_weather(self):
+        df_rides_per_hour = preprocess_rides_per_hour(self.df_bikes)
+        df_with_weather = add_weather_data_per_day(df_rides_per_hour, self.df_weather)
+        df_with_weather_hourly = get_hourly_weather(df_with_weather)
+        self.assertIn(COL_WEATHER_TEMP_HOURLY, df_with_weather_hourly.columns)

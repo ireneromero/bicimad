@@ -1,10 +1,10 @@
 import unittest
 
-from src.bicimad.constants.bikes_constants import *
-from src.bicimad.constants.paths import *
-from src.bicimad.constants.weather_constants import *
-from src.bicimad.operations.cleaning_operations import transform_types_bikes, remove_outliers_travel_time, clean_date_bikes, UPPER_QUANTILE, LOWER_QUANTILE, clean_weather_data
-from src.general.operations.dataframe_operations import load_dataframe_from_csv, load_dataframe_from_json
+from bicimad.constants.bikes_constants import *
+from bicimad.constants.paths import *
+from bicimad.constants.weather_constants import *
+from bicimad.operations.cleaning_operations import transform_types_bikes, remove_outliers_travel_time, clean_date_bikes, UPPER_QUANTILE, LOWER_QUANTILE, clean_weather_data
+from general.operations.dataframe_operations import load_dataframe_from_csv, load_dataframe_from_json
 
 
 class CleaningOperationsTest(unittest.TestCase):

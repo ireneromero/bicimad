@@ -1,7 +1,7 @@
 import pandas as pd
-import src.bicimad.constants.cleaning.mappers
-from src.bicimad.constants.bikes_constants import *
-from src.bicimad.constants.weather_constants import *
+import bicimad.constants.cleaning.mappers
+from bicimad.constants.bikes_constants import *
+from bicimad.constants.weather_constants import *
 
 UPPER_QUANTILE = 0.95
 LOWER_QUANTILE = 0.05
@@ -30,7 +30,7 @@ def transform_types_bikes(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def clean_station(station: str) -> str:
-    return src.bicimad.constants.cleaning.mappers.STATIONS_DICT.get(station, station)
+    return STATIONS_DICT.get(station, station)
 
 
 def clean_stations(df: pd.DataFrame) -> pd.DataFrame:
@@ -43,7 +43,7 @@ def clean_stations(df: pd.DataFrame) -> pd.DataFrame:
 
 def clean_date_bikes(df: pd.DataFrame) -> pd.DataFrame:
     df[COL_BIKES_DAY_OF_WEEK] = df[COL_BIKES_UNPLUG_TIMESTAMP].dt.dayofweek\
-        .map(src.bicimad.constants.cleaning.mappers.DAY_OF_WEEK_DICT)
+        .map(DAY_OF_WEEK_DICT)
     df[COL_BIKES_HOUR] = df[COL_BIKES_UNPLUG_TIMESTAMP].dt.hour
     df[COL_BIKES_MONTH] = df[COL_BIKES_UNPLUG_TIMESTAMP].dt.month
     df[COL_BIKES_DAY] = df[COL_BIKES_UNPLUG_TIMESTAMP].dt.day
@@ -59,7 +59,7 @@ def remove_outliers_travel_time(df: pd.DataFrame) -> pd.DataFrame:
 
 def filter_out_employees(df: pd.DataFrame) -> pd.DataFrame:
     # remove rows where user_type = 3 (bicimad employee)
-    return df[df[COL_BIKES_USER_TYPE != USER_TYPE_EMPLOYEE]]
+    return df[df[COL_BIKES_USER_TYPE] != USER_TYPE_EMPLOYEE]
 
 
 def transform_col_to_date(col: pd.Series) -> pd.Series:
@@ -71,16 +71,28 @@ def clean_weather_data(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def transform_types_weather(df: pd.DataFrame) -> pd.DataFrame:
-    # TODO think about refactoring this?
-    df[COL_WEATHER_TEMP_MEAN] = df[COL_WEATHER_TEMP_MEAN].str.replace(',', '.')
-    df[COL_WEATHER_RAIN] = df[COL_WEATHER_RAIN].str.replace(',', '.')
-    df[COL_WEATHER_WIND_MEAN] = df[COL_WEATHER_WIND_MEAN].str.replace(',', '.')
+    def column_to_float_format(df_transform: pd.DataFrame, column_name: str) -> pd.DataFrame:
+        df_transform[column_name] = df_transform[column_name].str.replace(',', '.')
+        return df_transform
 
-    df[COL_WEATHER_TEMP_MEAN] = pd.to_numeric(df[COL_WEATHER_TEMP_MEAN], downcast='float')
-    df[COL_WEATHER_RAIN] = pd.to_numeric(df[COL_WEATHER_RAIN], downcast='float')
-    df[COL_WEATHER_WIND_MEAN] = pd.to_numeric(df[COL_WEATHER_WIND_MEAN], downcast='float')
+    def column_to_numeric(df_transform: pd.DataFrame, column_name: str) -> pd.DataFrame:
+        df_transform[column_name] = pd.to_numeric(df_transform[column_name], downcast='float')
+        return df
 
+    columns_to_transform = [COL_WEATHER_TEMP_MEAN, COL_WEATHER_RAIN, COL_WEATHER_WIND_MEAN]
+    for column in columns_to_transform:
+        df = column_to_float_format(df, column)
+        df = column_to_numeric(df, column)
     return df
+
+    # # TODO think about refactoring this?
+    # df[COL_WEATHER_TEMP_MEAN] = df[COL_WEATHER_TEMP_MEAN].str.replace(',', '.')
+    # df[COL_WEATHER_RAIN] = df[COL_WEATHER_RAIN].str.replace(',', '.')
+    # df[COL_WEATHER_WIND_MEAN] = df[COL_WEATHER_WIND_MEAN].str.replace(',', '.')
+    #
+    # df[COL_WEATHER_TEMP_MEAN] = pd.to_numeric(df[COL_WEATHER_TEMP_MEAN], downcast='float')
+    # df[COL_WEATHER_RAIN] = pd.to_numeric(df[COL_WEATHER_RAIN], downcast='float')
+    # df[COL_WEATHER_WIND_MEAN] = pd.to_numeric(df[COL_WEATHER_WIND_MEAN], downcast='float')
 
 
 

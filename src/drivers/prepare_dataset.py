@@ -1,12 +1,12 @@
 import argparse
 from argparse import Namespace
-from src.general.operations.dataframe_operations import load_dataframe_from_csv, load_dataframe_from_json, save_dataframe
-from src.bicimad.operations.cleaning_operations import clean_weather_data
-from src.bicimad.operations.aggregation_operations import prepare_daily_data
+from general.operations.dataframe_operations import load_dataframe_from_csv, load_dataframe_from_json, save_dataframe
+from bicimad.operations.cleaning_operations import clean_weather_data
+from bicimad.operations.aggregation_operations import prepare_daily_data, prepare_hourly_data
 
-from src.bicimad.constants.paths import *
-from src.bicimad.constants.weather_constants import *
-from src.bicimad.constants.bikes_constants import *
+from bicimad.constants.paths import *
+from bicimad.constants.weather_constants import *
+from bicimad.constants.bikes_constants import *
 
 # Before executing: export PYTHONPATH="/home/irene/dev/keepler-prueba/keepler-bicimad:$PYTHONPATH"
 
@@ -21,7 +21,7 @@ def runner(args: Namespace) -> None:
     if args.sampling_frequency == 'daily': # extract daily/hourly value as constant
         df_prepared = prepare_daily_data(df_bikes_clean, df_weather)
     elif args.sampling_frequency == 'hourly':
-        # TODO
+        df_prepared = prepare_hourly_data(df_bikes_clean, df_weather)
         pass
     # TODO implement else, return error
     save_dataframe(df_prepared, create_path(args.home_path, PATH_DATASET.get(args.sampling_frequency)))
@@ -33,7 +33,7 @@ def main():
     parser = argparse.ArgumentParser(description='[BiciMad Project] Data Cleaning')
     parser.add_argument('--home-path', type=str, default='.', metavar='H',
                         help='home path')
-    parser.add_argument('--sampling-frequency', type=str, default='daily', metavar='S',
+    parser.add_argument('--sampling-frequency', type=str, default='hourly', metavar='S',
                         help='Sampling frequency of data: daily/hourly ')
 
     args: Namespace = parser.parse_args()

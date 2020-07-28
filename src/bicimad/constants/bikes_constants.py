@@ -20,6 +20,8 @@ COL_BIKES_DAY = 'day'
 COL_BIKES_DATE = 'date'
 
 COL_BIKES_RIDES = 'rides'
+COL_BIKES_RIDES_MEAN_WEEKDAY = 'mean_for_weekday'
+COL_BIKES_RIDES_MEAN_WEEKDAY_HOUR = 'mean_for_weekday_and_hour'
 
 # values
 USER_TYPE_INDETERMINED = 'user_type_indetermined'
