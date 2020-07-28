@@ -22,6 +22,10 @@ COL_BIKES_DATE = 'date'
 COL_BIKES_RIDES = 'rides'
 COL_BIKES_RIDES_MEAN_WEEKDAY = 'mean_for_weekday'
 COL_BIKES_RIDES_MEAN_WEEKDAY_HOUR = 'mean_for_weekday_and_hour'
+COL_BIKES_WEEKEND = 'weekend'
+DAYS_IN_WEEKEND = ['Sat', 'Sun']
+VALUE_WEEKEND_TRUE = 'weekend'
+VALUE_WEEKEND_FALSE = 'weekday'
 
 # values
 USER_TYPE_INDETERMINED = 'user_type_indetermined'
