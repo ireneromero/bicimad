@@ -1,8 +1,8 @@
 import unittest
 
-from bicimad.constants.bikes_constants import *
-from bicimad.constants.paths import *
-from bicimad.constants.weather_constants import *
+from bicimad.constants.bikes_constants import COL_BIKES_TRAVEL_TIME, COL_BIKES_DAY_OF_WEEK, COL_BIKES_DAY, COL_BIKES_MONTH
+from bicimad.constants.paths import PATH_BIKES_RAW, PATH_AEMET_PER_DAY
+from bicimad.constants.weather_constants import COL_WEATHER_RAIN, COL_WEATHER_TEMP_MEAN, COL_WEATHER_WIND_MEAN
 from bicimad.operations.cleaning_operations import transform_types_bikes, remove_outliers_travel_time, clean_date_bikes, UPPER_QUANTILE, LOWER_QUANTILE, clean_weather_data
 from general.operations.dataframe_operations import load_dataframe_from_csv, load_dataframe_from_json
 

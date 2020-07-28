@@ -1,21 +1,23 @@
-import pandas as pd
+from bicimad.constants.bikes_constants import COL_BIKES_DATE, COL_BIKES_DAY_OF_WEEK, COL_BIKES_RIDES, COL_BIKES_HOUR, \
+    DAYS_IN_WEEKEND, VALUE_WEEKEND_TRUE, VALUE_WEEKEND_FALSE, COL_BIKES_WEEKEND, COL_BIKES_RIDES_MEAN_WEEKDAY, \
+    COL_BIKES_RIDES_MEAN_WEEKDAY_HOUR
+from bicimad.constants.weather_constants import COL_WEATHER_DATE, COL_WEATHER_HOUR_TEMP_MAX, COL_WEATHER_HOUR_TEMP_MIN, \
+    COL_WEATHER_TEMP_MAX, COL_WEATHER_TEMP_MIN, COL_WEATHER_WIND_MEAN, COL_WEATHER_RAIN, COL_WEATHER_TEMP_MEAN, \
+    SUNRISE_HOUR, SUNSET_HOUR, COL_WEATHER_RAIN_HOURLY, COL_WEATHER_WIND_HOURLY, COL_WEATHER_TEMP_HOURLY
+from pandas import DataFrame as DataFrame
 import numpy as np
 from sklearn.linear_model import LinearRegression
 
-from src.general.operations.dataframe_operations import load_dataframe_from_csv, save_dataframe
-from bicimad.constants.bikes_constants import *
-from bicimad.constants.weather_constants import *
 
-
-def preprocess_rides_per_day(df: pd.DataFrame) -> pd.DataFrame:
+def preprocess_rides_per_day(df: DataFrame) -> DataFrame:
     # this dataframe should have a date column (parsed as datetime)
     return df.groupby([COL_BIKES_DATE, COL_BIKES_DAY_OF_WEEK]).size().reset_index(name=COL_BIKES_RIDES)
 
 
-def preprocess_rides_per_hour(df: pd.DataFrame) -> pd.DataFrame:
+def preprocess_rides_per_hour(df: DataFrame) -> DataFrame:
     return df.groupby([COL_BIKES_DATE, COL_BIKES_DAY_OF_WEEK, COL_BIKES_HOUR]).size().reset_index(name=COL_BIKES_RIDES)
 
-def add_weekend(df: pd.DataFrame) -> pd.DataFrame:
+def add_weekend(df: DataFrame) -> DataFrame:
 
     def day_of_week_to_weekend(row):
         if row[COL_BIKES_DAY_OF_WEEK] in DAYS_IN_WEEKEND:
@@ -25,12 +27,12 @@ def add_weekend(df: pd.DataFrame) -> pd.DataFrame:
     df[COL_BIKES_WEEKEND] = df.apply(lambda row: day_of_week_to_weekend(row), axis=1)
     return df
 
-def add_mean_rides_for_day(df: pd.DataFrame) -> pd.DataFrame:
+def add_mean_rides_for_day(df: DataFrame) -> DataFrame:
     mean_for_weekday = df.groupby(COL_BIKES_DAY_OF_WEEK)[COL_BIKES_RIDES].mean().to_dict()
     df[COL_BIKES_RIDES_MEAN_WEEKDAY] = df[COL_BIKES_DAY_OF_WEEK].map(mean_for_weekday)
     return df
 
-def add_mean_rides_for_day_and_hour(df: pd.DataFrame) -> pd.DataFrame:
+def add_mean_rides_for_day_and_hour(df: DataFrame) -> DataFrame:
     mean_for_weekday_and_hour = df.groupby([COL_BIKES_DAY_OF_WEEK, COL_BIKES_HOUR])[COL_BIKES_RIDES].mean().to_dict()
 
     def add_mean_rides_for_day_and_hour_for_row(row):
@@ -40,7 +42,7 @@ def add_mean_rides_for_day_and_hour(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def add_weather_data_per_day(df: pd.DataFrame, df_weather: pd.DataFrame) -> pd.DataFrame:
+def add_weather_data_per_day(df: DataFrame, df_weather: DataFrame) -> DataFrame:
     return df.merge(df_weather[[COL_WEATHER_DATE, COL_WEATHER_TEMP_MEAN, COL_WEATHER_RAIN, COL_WEATHER_WIND_MEAN,
                                 COL_WEATHER_HOUR_TEMP_MAX, COL_WEATHER_HOUR_TEMP_MIN, COL_WEATHER_TEMP_MAX, COL_WEATHER_TEMP_MIN]],
              how='left',
@@ -48,7 +50,7 @@ def add_weather_data_per_day(df: pd.DataFrame, df_weather: pd.DataFrame) -> pd.D
              right_on=COL_WEATHER_DATE)
 
 
-def prepare_daily_data(df: pd.DataFrame, df_weather: pd.DataFrame) -> pd.DataFrame:
+def prepare_daily_data(df: DataFrame, df_weather: DataFrame) -> DataFrame:
     df_rides_per_day = preprocess_rides_per_day(df)
     df_rides_per_day = add_weekend(df_rides_per_day)
     df_rides_per_day = add_mean_rides_for_day(df_rides_per_day)
@@ -88,10 +90,9 @@ def get_temperature_simple(hour_to_predict: int, temp_mean: float, temp_min: flo
     return temp
 
 
-def get_hourly_weather(df: pd.DataFrame) -> pd.DataFrame:
+def get_hourly_weather(df: DataFrame) -> DataFrame:
     df[COL_WEATHER_RAIN_HOURLY] = df[COL_WEATHER_RAIN]
     df[COL_WEATHER_WIND_HOURLY] = df[COL_WEATHER_WIND_MEAN]
-    #print(df[COL_WEATHER_HOUR_TEMP_MIN].isna().sum())
     df[COL_WEATHER_HOUR_TEMP_MIN] = df[COL_WEATHER_HOUR_TEMP_MIN].astype(str).str[:2].astype(int)
     df[COL_WEATHER_HOUR_TEMP_MAX] = df[COL_WEATHER_HOUR_TEMP_MAX].astype(str).str[:2].astype(int)
     df[COL_WEATHER_TEMP_HOURLY] = df.apply(lambda row: get_temperature_simple_per_row(row), axis=1)
@@ -99,7 +100,7 @@ def get_hourly_weather(df: pd.DataFrame) -> pd.DataFrame:
 
 
 
-def prepare_hourly_data(df: pd.DataFrame, df_weather: pd.DataFrame) -> pd.DataFrame:
+def prepare_hourly_data(df: DataFrame, df_weather: DataFrame) -> DataFrame:
     df_rides_per_hour = preprocess_rides_per_hour(df)
     df_rides_per_hour = add_weekend(df_rides_per_hour)
     df_rides_per_hour = add_mean_rides_for_day_and_hour(df_rides_per_hour)
