@@ -30,6 +30,10 @@ PATH_RESULTS = {
         'deep-learning': {
             'model' :'models/hourly/daily/model',
             'metrics': 'data/results/hourly/daily/metrics'
+        },
+        'xgboost':{
+            'model' : 'models/hourly/xgboost/model',
+            'metrics': 'data/results/hourly/xgboost/metrics'
         }
     }
 }

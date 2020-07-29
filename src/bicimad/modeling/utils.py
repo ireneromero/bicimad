@@ -3,7 +3,7 @@ import numpy as np
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
 
-from bicimad.constants.model import CATEGORICAL_COLUMNS_DAILY, TEST_SIZE, COLUMNS_TO_TRANSFORM_TYPE_DAILY
+from bicimad.constants.model import CATEGORICAL_COLUMNS_DAILY, TEST_SIZE, COLUMNS_TO_TRANSFORM_TYPE, CATEGORICAL_COLUMNS
 from bicimad.modeling.linear_regression import create_linear_regression_model
 from bicimad.operations.cleaning import transform_types_dataset
 from pandas import DataFrame as DataFrame
@@ -13,16 +13,13 @@ def split_data(df: DataFrame, test_size=0.2):
     # TODO better transform to numpy?
     return train_test_split(df, test_size=test_size)
 
-
 def encode_categorical(df: DataFrame, categorical_columns: list) -> DataFrame:
     return pd.get_dummies(df, columns=categorical_columns)
 
-
-def prepare_data(df: DataFrame):
-    df_types_transformed = transform_types_dataset(df, COLUMNS_TO_TRANSFORM_TYPE_DAILY)
-    df_encoded = encode_categorical(df_types_transformed, CATEGORICAL_COLUMNS_DAILY)
+def prepare_data(df:DataFrame, sampling_frequency: str = 'daily'):
+    df_types_transformed = transform_types_dataset(df, COLUMNS_TO_TRANSFORM_TYPE[sampling_frequency])
+    df_encoded = encode_categorical(df, CATEGORICAL_COLUMNS[sampling_frequency])
     return split_data(df_encoded, TEST_SIZE)
-
 
 def train(model, df_train, features_columns, target_column):
     return model.fit(df_train[features_columns], df_train[target_column])

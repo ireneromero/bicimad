@@ -2,10 +2,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import numpy as np
+from bicimad.modeling.utils import prepare_data
 from pandas import DataFrame as DataFrame
 from sklearn.metrics import mean_squared_error, r2_score
 
-from bicimad.modeling.utils import prepare_data, split_data
 
 from bicimad.constants.model import FEATURES_DAILY, TARGET, HIDDEN_DIMENSION, TEST_SIZE, EPOCHS
 
@@ -29,13 +29,13 @@ def create_net():
     return net, optimizer, loss_criterion
 
 
-def prepare_data_for_deep_learning(df: DataFrame):
+def prepare_data_for_deep_learning(df: DataFrame, sampling_frequency='daily'):
 
     # TODO add parameter to select between daily/hourly data
     # TODO check overfitting for overfitting using validation set
     # TODO scale data
     # TODO fix prepare_data and split_data to use them with this purpose
-    df_train, df_test = prepare_data(df)
+    df_train, df_test = prepare_data(df, sampling_frequency)
     df_train, df_val = split_data(df_train, TEST_SIZE)
 
     train_features_tensor = torch.tensor(df_train[FEATURES_DAILY].values).float()
