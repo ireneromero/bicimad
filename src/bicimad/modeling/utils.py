@@ -23,18 +23,23 @@ def prepare_data(df: DataFrame):
     df_encoded = encode_categorical(df_types_transformed, CATEGORICAL_COLUMNS_DAILY)
     return split_data(df_encoded, TEST_SIZE)
 
+
 def train(model, df_train, features_columns, target_column):
     return model.fit(df_train[features_columns], df_train[target_column])
 
 
-def evaluate(model, test_features, test_target):
+def predict(model, test_features):
+    return model.predict(test_features)
+
+
+def evaluate(predictions, test_target):
+
     # TODO implement parametrization of metrics selection
 
     def mean_absolute_percentage_error(target_true, target_predicted):
         return np.mean(np.abs((target_true - target_predicted) / target_true)) * 100
 
     metrics_result = {}
-    predictions = model.predict(test_features)
     metrics_result['mae'] = mean_absolute_error(test_target, predictions)
     metrics_result['mse']  = mean_squared_error(test_target, predictions)
     metrics_result['r2'] = r2_score(test_target, predictions)

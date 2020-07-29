@@ -46,7 +46,6 @@ def runner(args: Namespace) -> None:
             metrics_file.write(json.dumps(metrics))
 
 def main():
-    # args: --home-path /home/irene/dev/keepler-prueba/keepler-bicimad --sampling-frequency daily --model-type deep-learning
     print("[data-modeling] Starting ... ")
     parser = argparse.ArgumentParser(description='[BiciMad Project] Data Forecasting Model')
     parser.add_argument('--home-path', type=str, default='.', metavar='H',

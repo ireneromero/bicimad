@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+import numpy as np
 from pandas import DataFrame as DataFrame
 from sklearn.metrics import mean_squared_error, r2_score
 
@@ -66,15 +67,15 @@ def train_net(net, optimizer, loss_criterion, epochs, train_features_tensor, tra
     return net, losses, losses_val
 
 
-def evaluate_net(net, test_features_tensor, test_target_tensor, metrics=['r2']):
+def evaluate_net(net, test_features_tensor, test_target_tensor):
     metrics_result = {}
     with torch.no_grad():
         net.eval() # not necessary since no dropout layers
         predictions_test = net(test_features_tensor)
-    if 'mse' in metrics:
         metrics_result['mse'] = mean_squared_error(test_target_tensor, predictions_test)
-    if 'r2' in metrics: # if r2 negative, then it fits worse than a horizontal line
+        # if r2 negative, then it fits worse than a horizontal line
         metrics_result['r2'] = r2_score(test_target_tensor, predictions_test)
+        # TODO implement other metrics (mape, acc)
     return metrics_result
 
 
@@ -82,7 +83,7 @@ def deep_learning_model(dataset):
     train_features_tensor, train_target_tensor, val_features_tensor, val_target_tensor, test_features_tensor, test_target_tensor = prepare_data_for_deep_learning(dataset)
     net, optimizer, loss_criterion = create_net()
     net, losses, losses_val = train_net(net, optimizer, loss_criterion, EPOCHS, train_features_tensor, train_target_tensor, val_features_tensor, val_target_tensor)
-    metrics = evaluate_net(net, test_features_tensor, test_target_tensor, metrics=['mse', 'r2'])
+    metrics = evaluate_net(net, test_features_tensor, test_target_tensor)
     return net, metrics
 
 

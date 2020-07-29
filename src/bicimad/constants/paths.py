@@ -9,27 +9,27 @@ PATH_DATASET = {
 PATH_RESULTS = {
     'daily': {
         'random-forest':{
-            'model' :'data/results/daily/randomforest/model',
+            'model' :'models/daily/randomforest/model',
             'metrics': 'data/results/daily/randomforest/metrics'
         },
         'deep-learning': {
-            'model' :'data/results/daily/deeplearning/model',
+            'model' :'models/daily/deeplearning/model',
             'metrics': 'data/results/daily/deeplearning/metrics'
         },
         'xgboost': {
-            'model' :'data/results/daily/xgboost/model',
+            'model' :'models/daily/xgboost/model',
             'metrics': 'data/results/daily/xgboost/metrics'
         },
     },
     'hourly':
     {
         'random-forest':{
-            'model' : 'data/results/hourly/randomforest/model',
+            'model' : 'models/hourly/randomforest/model',
             'metrics': 'data/results/hourly/randomforest/metrics'
         },
         'deep-learning': {
-            'model' :'data/results/hourly/deeplearning/model',
-            'metrics': 'data/results/hourly/deeplearning/metrics'
+            'model' :'models/hourly/daily/model',
+            'metrics': 'data/results/hourly/daily/metrics'
         }
     }
 }
