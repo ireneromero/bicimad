@@ -4,7 +4,8 @@ from bicimad.constants.bikes_constants import COL_BIKES_ID_PLUG_BASE, COL_BIKES_
     COL_BIKES_UNPLUG_TIMESTAMP, COL_BIKES_DAY_OF_WEEK, COL_BIKES_HOUR, COL_BIKES_MONTH, COL_BIKES_DAY, COL_BIKES_DATE, \
     COL_BIKES_TRAVEL_TIME, USER_TYPE_EMPLOYEE
 from bicimad.constants.cleaning.mappers import STATIONS_DICT, DAY_OF_WEEK_DICT
-from bicimad.constants.weather_constants import COL_WEATHER_TEMP_MEAN, COL_WEATHER_RAIN, COL_WEATHER_WIND_MEAN
+from bicimad.constants.weather_constants import COL_WEATHER_TEMP_MEAN, COL_WEATHER_RAIN, COL_WEATHER_WIND_MEAN, \
+    COL_WEATHER_TEMP_MIN, COL_WEATHER_TEMP_MAX
 from pandas import DataFrame as DataFrame
 
 
@@ -75,21 +76,29 @@ def clean_weather_data(df: DataFrame) -> DataFrame:
     return transform_types_weather(df)
 
 
+def column_to_float_format(df: DataFrame, column_name: str) -> DataFrame:
+    df[column_name] = df[column_name].astype(str).str.replace(',', '.')
+    return df
+
+def column_to_numeric(df: DataFrame, column_name: str) -> DataFrame:
+    df[column_name] = pd.to_numeric(df[column_name], downcast='float')
+    return df
+
+
+# TODO refactor these funcions (transform_types_*) to a single one?
 def transform_types_weather(df: DataFrame) -> DataFrame:
-    def column_to_float_format(df_transform: DataFrame, column_name: str) -> DataFrame:
-        df_transform[column_name] = df_transform[column_name].str.replace(',', '.')
-        return df_transform
-
-    def column_to_numeric(df_transform: DataFrame, column_name: str) -> DataFrame:
-        df_transform[column_name] = pd.to_numeric(df_transform[column_name], downcast='float')
-        return df
-
     columns_to_transform = [COL_WEATHER_TEMP_MEAN, COL_WEATHER_RAIN, COL_WEATHER_WIND_MEAN]
     for column in columns_to_transform:
         df = column_to_float_format(df, column)
         df = column_to_numeric(df, column)
     return df
 
+
+def transform_types_dataset(df:DataFrame, columns_to_transform) -> DataFrame:
+    for column in columns_to_transform:
+        df = column_to_float_format(df, column)
+        df = column_to_numeric(df, column)
+    return df
 
 
 

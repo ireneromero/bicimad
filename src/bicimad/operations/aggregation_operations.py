@@ -105,7 +105,8 @@ def prepare_hourly_data(df: DataFrame, df_weather: DataFrame) -> DataFrame:
     df_rides_per_hour = add_weekend(df_rides_per_hour)
     df_rides_per_hour = add_mean_rides_for_day_and_hour(df_rides_per_hour)
     df_hourly = add_weather_data_per_day(df_rides_per_hour, df_weather)
-    return get_hourly_weather(df_hourly).drop([COL_WEATHER_TEMP_MEAN,
+    return get_hourly_weather(df_hourly).drop([COL_BIKES_DATE,
+                                               COL_WEATHER_TEMP_MEAN,
                                                COL_WEATHER_RAIN,
                                                COL_WEATHER_WIND_MEAN,
                                                COL_WEATHER_HOUR_TEMP_MIN,

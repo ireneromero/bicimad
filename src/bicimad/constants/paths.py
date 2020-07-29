@@ -6,3 +6,5 @@ PATH_DATASET = {
     'daily': 'data/prepared/bicimad_daily.csv',
     'hourly': 'data/prepared/bicimad_hourly.csv'
 }
+PATH_MODEL_DEEPLEARNING_MODEL = 'data/results/deeplearning/net'
+PATH_MODEL_DEEPLEARNING_METRICS = 'data/results/deeplearning/metrics'

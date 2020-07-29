@@ -6,7 +6,7 @@ from sklearn import metrics
 def fit_model(model: LinearRegression, train_features, train_target) -> LinearRegression:
     return model.fit(train_features, train_target)
 
-def create_model() -> LinearRegression:
+def create_linear_regression_model() -> LinearRegression:
     return LinearRegression()
 
 def get_score(model, train_features, train_target) -> int:
