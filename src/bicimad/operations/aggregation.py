@@ -115,3 +115,67 @@ def prepare_hourly_data(df: DataFrame, df_weather: DataFrame) -> DataFrame:
                                                COL_WEATHER_WIND_MEAN,
                                                COL_WEATHER_HOUR_TEMP_MIN,
                                                COL_WEATHER_HOUR_TEMP_MAX], axis=1)
+
+
+# TODO REMOVE THIS LINE - IRI get_temperature_simple_v2: Nothing to do
+# TODO REMOVE THIS LINE - Remove old definition (?)
+# TODO REMOVE THIS LINE - Rename definition (?): 'def get_temperature_simple_v2' -> 'def get_temperature_simple'
+def get_temperature_simple_v2(hour_to_predict: int,
+                              yesterday_temp_min_hour: int, yesterday_temp_min: float, yesterday_temp_max_hour: int,
+                              yesterday_temp_max: float,
+                              temp_min: float, temp_max: float, hour_temp_min: int, hour_temp_max: int,
+                              tomorrow_temp_min_hour: int, tomorrow_temp_min: float, tomorrow_temp_max_hour: int,
+                              tomorrow_temp_max: float,
+                              ) -> LinearRegression:
+    KEY_INTERVAL1_HOUR = 'I1H'
+    KEY_INTERVAL1_TEMP = 'I1T'
+    KEY_INTERVAL2_HOUR = 'I2H'
+    KEY_INTERVAL2_TEMP = 'I2T'
+
+    def get_intervals(temp_min_: float, temp_max_: float, hour_temp_min_: int, hour_temp_max_: int) -> dict:
+        result = {}
+        if hour_temp_min_ < hour_temp_max_:
+            result[KEY_INTERVAL1_HOUR] = hour_temp_min_
+            result[KEY_INTERVAL1_TEMP] = temp_min_
+            result[KEY_INTERVAL2_HOUR] = hour_temp_max_
+            result[KEY_INTERVAL2_TEMP] = temp_max_
+        else:
+            result[KEY_INTERVAL2_HOUR] = hour_temp_min_
+            result[KEY_INTERVAL2_TEMP] = temp_min_
+            result[KEY_INTERVAL1_HOUR] = hour_temp_max_
+            result[KEY_INTERVAL1_TEMP] = temp_max_
+
+        return result
+
+    dict_yesterday_interval_points = get_intervals(yesterday_temp_min, yesterday_temp_max, yesterday_temp_min_hour,
+                                                   yesterday_temp_max_hour)
+    dict_today_interval_points = get_intervals(temp_min, temp_max, hour_temp_min, hour_temp_max)
+    dict_tomorrow_interval_points = get_intervals(tomorrow_temp_min, tomorrow_temp_max, tomorrow_temp_min_hour,
+                                                  tomorrow_temp_max_hour)
+
+    def get_temperature_with_interval_points(yesterday_point2_hour: int, yesterday_point2_temp: float,
+                                             today_point1_hour: int, today_point1_temp: float, today_point2_hour: int,
+                                             today_point2_temp: float,
+                                             tomorrow_point1_hour: int, tomorrow_point1_temp: float,
+                                             ) -> LinearRegression:
+
+        if hour_to_predict < today_point1_hour:
+            # Linear with yesterday_point2 and today_point1
+            result_temp = get_temperature_model(yesterday_point2_temp, today_point1_temp, yesterday_point2_hour,
+                                                today_point1_hour)
+        elif hour_to_predict < today_point2_hour:
+            # Linear with today_point1 and today_point2
+            result_temp = get_temperature_model(today_point1_temp, today_point2_temp, today_point1_hour,
+                                                today_point2_hour)
+        else:
+            # Linear with today_point2 and tomorrow_point1
+            result_temp = get_temperature_model(today_point2_temp, tomorrow_point1_temp, today_point2_hour,
+                                                tomorrow_point1_hour)
+        return result_temp
+
+    return get_temperature_with_interval_points(
+        dict_yesterday_interval_points[KEY_INTERVAL2_HOUR], dict_yesterday_interval_points[KEY_INTERVAL2_TEMP],
+        dict_today_interval_points[KEY_INTERVAL1_HOUR], dict_today_interval_points[KEY_INTERVAL1_TEMP],
+        dict_today_interval_points[KEY_INTERVAL2_HOUR], dict_today_interval_points[KEY_INTERVAL2_TEMP],
+        dict_tomorrow_interval_points[KEY_INTERVAL1_HOUR], dict_tomorrow_interval_points[KEY_INTERVAL1_TEMP]
+    )
