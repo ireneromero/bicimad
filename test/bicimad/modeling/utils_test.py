@@ -2,9 +2,9 @@ import unittest
 from sklearn.model_selection import train_test_split
 
 from bicimad.constants.paths import PATH_DATASET
-from bicimad.constants.model_constants import TEST_SIZE, CATEGORICAL_COLUMNS_DAILY
+from bicimad.constants.model import TEST_SIZE, CATEGORICAL_COLUMNS_DAILY
 
-from bicimad.constants.bikes_constants import COL_BIKES_DATE
+from bicimad.constants.rides import COL_BIKES_DATE
 from general.operations.dataframe_operations import load_dataframe_from_csv
 
 from bicimad.modeling.utils import split_data, encode_categorical

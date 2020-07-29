@@ -7,7 +7,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 
 from bicimad.modeling.utils import prepare_data, split_data
 
-from bicimad.constants.model_constants import FEATURES_DAILY, TARGET, HIDDEN_DIMENSION, TEST_SIZE, EPOCHS
+from bicimad.constants.model import FEATURES_DAILY, TARGET, HIDDEN_DIMENSION, TEST_SIZE, EPOCHS
 
 
 class Net(nn.Module):
@@ -20,12 +20,14 @@ class Net(nn.Module):
         x = F.relu(self.fc1(x))
         return self.fc2(x)
 
+
 def create_net():
     # TODO implement other optimizers
     net = Net(len(FEATURES_DAILY), HIDDEN_DIMENSION, 1)
     optimizer = torch.optim.Adam(net.parameters(), lr = 0.01)
     loss_criterion = nn.MSELoss()
     return net, optimizer, loss_criterion
+
 
 def prepare_data_for_deep_learning(df: DataFrame):
 
@@ -64,6 +66,7 @@ def train_net(net, optimizer, loss_criterion, epochs, train_features_tensor, tra
 
     return net, losses, losses_val
 
+
 def evaluate_net(net, test_features_tensor, test_target_tensor, metrics=['r2']):
     metrics_result = {}
     with torch.no_grad():
@@ -82,6 +85,7 @@ def deep_learning_model(dataset):
     net, losses, losses_val = train_net(net, optimizer, loss_criterion, EPOCHS, train_features_tensor, train_target_tensor, val_features_tensor, val_target_tensor)
     metrics = evaluate_net(net, test_features_tensor, test_target_tensor, metrics=['mse', 'r2'])
     return net, metrics
+
 
 def save_model(net, path):
     torch.save(net.state_dict(), path)

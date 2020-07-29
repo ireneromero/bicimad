@@ -1,8 +1,8 @@
 import unittest
 from src.general.operations.dataframe_operations import load_dataframe_from_csv, load_dataframe_from_json
 from src.bicimad.constants.paths import *
-from src.bicimad.constants.bikes_constants import *
-from src.bicimad.constants.weather_constants import *
+from src.bicimad.constants.rides import *
+from src.bicimad.constants.weather import *
 
 class DataFrameOperationsTest(unittest.TestCase):
 

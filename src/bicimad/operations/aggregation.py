@@ -1,7 +1,7 @@
-from bicimad.constants.bikes_constants import COL_BIKES_DATE, COL_BIKES_DAY_OF_WEEK, COL_BIKES_RIDES, COL_BIKES_HOUR, \
+from bicimad.constants.rides import COL_BIKES_DATE, COL_BIKES_DAY_OF_WEEK, COL_BIKES_RIDES, COL_BIKES_HOUR, \
     DAYS_IN_WEEKEND, VALUE_WEEKEND_TRUE, VALUE_WEEKEND_FALSE, COL_BIKES_WEEKEND, COL_BIKES_RIDES_MEAN_WEEKDAY, \
     COL_BIKES_RIDES_MEAN_WEEKDAY_HOUR
-from bicimad.constants.weather_constants import COL_WEATHER_DATE, COL_WEATHER_HOUR_TEMP_MAX, COL_WEATHER_HOUR_TEMP_MIN, \
+from bicimad.constants.weather import COL_WEATHER_DATE, COL_WEATHER_HOUR_TEMP_MAX, COL_WEATHER_HOUR_TEMP_MIN, \
     COL_WEATHER_TEMP_MAX, COL_WEATHER_TEMP_MIN, COL_WEATHER_WIND_MEAN, COL_WEATHER_RAIN, COL_WEATHER_TEMP_MEAN, \
     SUNRISE_HOUR, SUNSET_HOUR, COL_WEATHER_RAIN_HOURLY, COL_WEATHER_WIND_HOURLY, COL_WEATHER_TEMP_HOURLY
 from pandas import DataFrame as DataFrame
@@ -17,6 +17,7 @@ def preprocess_rides_per_day(df: DataFrame) -> DataFrame:
 def preprocess_rides_per_hour(df: DataFrame) -> DataFrame:
     return df.groupby([COL_BIKES_DATE, COL_BIKES_DAY_OF_WEEK, COL_BIKES_HOUR]).size().reset_index(name=COL_BIKES_RIDES)
 
+
 def add_weekend(df: DataFrame) -> DataFrame:
 
     def day_of_week_to_weekend(row):
@@ -27,10 +28,12 @@ def add_weekend(df: DataFrame) -> DataFrame:
     df[COL_BIKES_WEEKEND] = df.apply(lambda row: day_of_week_to_weekend(row), axis=1)
     return df
 
+
 def add_mean_rides_for_day(df: DataFrame) -> DataFrame:
     mean_for_weekday = df.groupby(COL_BIKES_DAY_OF_WEEK)[COL_BIKES_RIDES].mean().to_dict()
     df[COL_BIKES_RIDES_MEAN_WEEKDAY] = df[COL_BIKES_DAY_OF_WEEK].map(mean_for_weekday)
     return df
+
 
 def add_mean_rides_for_day_and_hour(df: DataFrame) -> DataFrame:
     mean_for_weekday_and_hour = df.groupby([COL_BIKES_DAY_OF_WEEK, COL_BIKES_HOUR])[COL_BIKES_RIDES].mean().to_dict()
@@ -65,10 +68,12 @@ def get_temperature_model(temp_1: float, temp_2: float, hour_temp_1: int, hour_t
     model.fit(hours, temps)
     return model
 
+
 def get_temperature_with_model(row):
     # TODO
     # we need to have weather information for 31/08 and 1/10
     pass
+
 
 def get_temperature_simple_per_row(row):
     return get_temperature_simple(row[COL_BIKES_HOUR],
@@ -97,7 +102,6 @@ def get_hourly_weather(df: DataFrame) -> DataFrame:
     df[COL_WEATHER_HOUR_TEMP_MAX] = df[COL_WEATHER_HOUR_TEMP_MAX].astype(str).str[:2].astype(int)
     df[COL_WEATHER_TEMP_HOURLY] = df.apply(lambda row: get_temperature_simple_per_row(row), axis=1)
     return df
-
 
 
 def prepare_hourly_data(df: DataFrame, df_weather: DataFrame) -> DataFrame:

@@ -1,9 +1,10 @@
 import argparse
 from argparse import Namespace
-from general.operations.dataframe_operations import load_dataframe_from_csv, save_dataframe
-from bicimad.operations.cleaning_operations import *
 
-from src.bicimad.constants.paths import *
+from bicimad.constants.paths import PATH_BIKES_RAW, PATH_BIKES_CLEAN
+from bicimad.operations.cleaning import clean_bikes_data
+from general.operations.dataframe_operations import load_dataframe_from_csv, save_dataframe
+
 
 # Before executing: export PYTHONPATH="/home/irene/dev/keepler-prueba/keepler-bicimad:$PYTHONPATH"
 

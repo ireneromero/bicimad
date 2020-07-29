@@ -1,12 +1,13 @@
 import argparse
 from argparse import Namespace
-from general.operations.dataframe_operations import load_dataframe_from_csv, load_dataframe_from_json, save_dataframe
-from bicimad.operations.cleaning_operations import clean_weather_data
-from bicimad.operations.aggregation_operations import prepare_daily_data, prepare_hourly_data
 
-from bicimad.constants.paths import *
-from bicimad.constants.weather_constants import *
-from bicimad.constants.bikes_constants import *
+from bicimad.constants.paths import PATH_BIKES_CLEAN, PATH_AEMET_PER_DAY, PATH_DATASET
+from bicimad.constants.rides import COL_BIKES_DATE
+from bicimad.constants.weather import COL_WEATHER_DATE
+from general.operations.dataframe_operations import load_dataframe_from_csv, load_dataframe_from_json, save_dataframe
+from bicimad.operations.cleaning import clean_weather_data
+from bicimad.operations.aggregation import prepare_daily_data, prepare_hourly_data
+
 
 # Before executing: export PYTHONPATH="/home/irene/dev/keepler-prueba/keepler-bicimad:$PYTHONPATH"
 

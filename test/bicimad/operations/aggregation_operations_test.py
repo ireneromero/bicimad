@@ -1,12 +1,12 @@
 import unittest
 import numpy as np
 
-from bicimad.constants.bikes_constants import COL_BIKES_DATE, COL_BIKES_RIDES, COL_BIKES_HOUR
-from bicimad.constants.weather_constants import COL_WEATHER_DATE, COL_WEATHER_RAIN, COL_WEATHER_TEMP_MEAN, COL_WEATHER_WIND_MEAN, COL_WEATHER_TEMP_HOURLY
+from bicimad.constants.rides import COL_BIKES_DATE, COL_BIKES_RIDES, COL_BIKES_HOUR
+from bicimad.constants.weather import COL_WEATHER_DATE, COL_WEATHER_RAIN, COL_WEATHER_TEMP_MEAN, COL_WEATHER_WIND_MEAN, COL_WEATHER_TEMP_HOURLY
 from bicimad.constants.paths import PATH_BIKES_CLEAN, PATH_AEMET_PER_DAY
-from bicimad.operations.cleaning_operations import transform_types_bikes, remove_outliers_travel_time, clean_date_bikes, UPPER_QUANTILE, LOWER_QUANTILE
+from bicimad.operations.cleaning import transform_types_bikes, remove_outliers_travel_time, clean_date_bikes, UPPER_QUANTILE, LOWER_QUANTILE
 from general.operations.dataframe_operations import load_dataframe_from_csv, load_dataframe_from_json
-from bicimad.operations.aggregation_operations import preprocess_rides_per_day, preprocess_rides_per_hour, add_weather_data_per_day, prepare_daily_data, \
+from bicimad.operations.aggregation import preprocess_rides_per_day, preprocess_rides_per_hour, add_weather_data_per_day, prepare_daily_data, \
     get_temperature_model, get_temperature_simple, get_hourly_weather, add_mean_rides_for_day
 
 #TODO tests are only valid for current data. Create data folder inside test folder to provide test reproducibility.

@@ -1,10 +1,10 @@
 import pandas as pd
-from bicimad.constants.bikes_constants import COL_BIKES_ID_PLUG_BASE, COL_BIKES_ID_UNPLUG_BASE, \
+from bicimad.constants.rides import COL_BIKES_ID_PLUG_BASE, COL_BIKES_ID_UNPLUG_BASE, \
     COL_BIKES_ID_PLUG_STATION, COL_BIKES_ID_UNPLUG_STATION, COL_BIKES_USER_TYPE, COL_BIKES_AGE_RANGE, \
     COL_BIKES_UNPLUG_TIMESTAMP, COL_BIKES_DAY_OF_WEEK, COL_BIKES_HOUR, COL_BIKES_MONTH, COL_BIKES_DAY, COL_BIKES_DATE, \
     COL_BIKES_TRAVEL_TIME, USER_TYPE_EMPLOYEE
 from bicimad.constants.cleaning.mappers import STATIONS_DICT, DAY_OF_WEEK_DICT
-from bicimad.constants.weather_constants import COL_WEATHER_TEMP_MEAN, COL_WEATHER_RAIN, COL_WEATHER_WIND_MEAN, \
+from bicimad.constants.weather import COL_WEATHER_TEMP_MEAN, COL_WEATHER_RAIN, COL_WEATHER_WIND_MEAN, \
     COL_WEATHER_TEMP_MIN, COL_WEATHER_TEMP_MAX
 from pandas import DataFrame as DataFrame
 
@@ -14,6 +14,8 @@ LOWER_QUANTILE = 0.05
 
 
 def clean_bikes_data(df: DataFrame, without_employees: bool = False, remove_outliers: bool = False) -> DataFrame:
+    # TODO modify without_employees to with_employees to better usability
+    # TODO refactor -> move remove outliers and remove employee data to prepare_dataset.py
     df = transform_types_bikes(df)
     df = clean_stations(df)
     df = clean_date_bikes(df)
@@ -68,10 +70,6 @@ def filter_out_employees(df: DataFrame) -> DataFrame:
     return df[df[COL_BIKES_USER_TYPE] != USER_TYPE_EMPLOYEE]
 
 
-def transform_col_to_date(col: pd.Series) -> pd.Series:
-    return pd.to_datetime(col)
-
-
 def clean_weather_data(df: DataFrame) -> DataFrame:
     return transform_types_weather(df)
 
@@ -79,6 +77,7 @@ def clean_weather_data(df: DataFrame) -> DataFrame:
 def column_to_float_format(df: DataFrame, column_name: str) -> DataFrame:
     df[column_name] = df[column_name].astype(str).str.replace(',', '.')
     return df
+
 
 def column_to_numeric(df: DataFrame, column_name: str) -> DataFrame:
     df[column_name] = pd.to_numeric(df[column_name], downcast='float')
