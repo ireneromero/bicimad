@@ -6,32 +6,30 @@ PATH_DATASET = {
     'daily': 'data/prepared/bicimad_daily.csv',
     'hourly': 'data/prepared/bicimad_hourly.csv'
 }
-PATH_MODEL_DEEPLEARNING_MODEL = 'data/results/deeplearning/net'
-PATH_MODEL_DEEPLEARNING_METRICS = 'data/results/deeplearning/metrics'
-
-PATH_MODEL_RF_MODEL = 'data/results/randomforest/randomforestmodel'
-PATH_MODEL_RF_METRICS = 'data/results/randomforest/metrics'
-
 PATH_RESULTS = {
     'daily': {
         'random-forest':{
-            'model' :'data/results/randomforest/daily/randomforestmodel',
-            'metrics': 'data/results/randomforest/daily/metrics'
+            'model' :'data/results/daily/randomforest/model',
+            'metrics': 'data/results/daily/randomforest/metrics'
         },
         'deep-learning': {
-            'model' :'data/results/deeplearning/daily/randomforestmodel',
-            'metrics': 'data/results/deeplearning/daily/metrics'
+            'model' :'data/results/daily/deeplearning/model',
+            'metrics': 'data/results/daily/deeplearning/metrics'
+        },
+        'xgboost': {
+            'model' :'data/results/daily/xgboost/model',
+            'metrics': 'data/results/daily/xgboost/metrics'
         },
     },
     'hourly':
     {
         'random-forest':{
-            'model' : 'data/results/randomforest/hourly/randomforestmodel',
-            'metrics': 'data/results/randomforest/hourly/metrics'
+            'model' : 'data/results/hourly/randomforest/model',
+            'metrics': 'data/results/hourly/randomforest/metrics'
         },
         'deep-learning': {
-            'model' :'data/results/deeplearning/hourly/randomforestmodel',
-            'metrics': 'data/results/deeplearning/hourly/metrics'
+            'model' :'data/results/hourly/deeplearning/model',
+            'metrics': 'data/results/hourly/deeplearning/metrics'
         }
     }
 }

@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from bicimad.constants.paths import PATH_MODEL_DEEPLEARNING_MODEL
 from pandas import DataFrame as DataFrame
 from sklearn.metrics import mean_squared_error, r2_score
 

@@ -12,6 +12,7 @@ def random_forest_model(dataset, feature_importance=True):
                                    parameters_grid=GRID_SEARCH_PARAMETERS_RF,
                                    train_features=dataset_train[FEATURES_DAILY],
                                    train_target=dataset_train[TARGET]).best_estimator_
+    rf_model_best.fit(dataset_train[FEATURES_DAILY], dataset_train[TARGET])
     metrics = evaluate(rf_model_best,
                        test_features=dataset_test[FEATURES_DAILY],
                        test_target=dataset_test[TARGET])

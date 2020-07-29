@@ -40,7 +40,12 @@ GRID_SEARCH_PARAMETERS_RF = [
         'min_samples_leaf': [2, 3],
     }
 ]
-
+# -------------------------------------------------- XGB Model ----------------------------------------------------
+GRID_SEARCH_PARAMETERS_XGB = {
+    'n_estimators': [100, 200, 500, 1000, 5000],
+    'max_depth':[3, 5, 7, 9, 10, 15],
+    'objective':['reg:squarederror']
+}
 
 # -------------------------------------------- Deep Learning Model ------------------------------------------------
 # deep learning model
