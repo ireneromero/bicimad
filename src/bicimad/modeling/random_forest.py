@@ -6,15 +6,15 @@ from bicimad.modeling.utils import grid_search_cv, evaluate, predict, prepare_da
 
 
 def random_forest_model(dataset, sampling_frequency='daily', feature_importance=True):
-    FEATURES = MODEL_FEATURES[sampling_frequency]  # depending on sampling_frequency
+    features = MODEL_FEATURES[sampling_frequency]  # depending on sampling_frequency
     dataset_train, dataset_test = prepare_data(dataset, sampling_frequency)
     rf_model = RandomForestRegressor()
     rf_model_best = grid_search_cv(rf_model,
                                    parameters_grid=GRID_SEARCH_PARAMETERS_RF,
-                                   train_features=dataset_train[FEATURES],
+                                   train_features=dataset_train[features],
                                    train_target=dataset_train[TARGET]).best_estimator_
-    rf_model_best.fit(dataset_train[FEATURES], dataset_train[TARGET])
-    predictions = predict(rf_model_best, dataset_test[FEATURES])
+    rf_model_best.fit(dataset_train[features], dataset_train[TARGET])
+    predictions = predict(rf_model_best, dataset_test[features])
     metrics = evaluate(predictions,
                        test_target=dataset_test[TARGET])
     if feature_importance:
@@ -22,7 +22,7 @@ def random_forest_model(dataset, sampling_frequency='daily', feature_importance=
         feature_importances = rf_model_best.feature_importances_
         sorted_features_idx = np.argsort(feature_importances)
         sorted_features_importances = feature_importances[sorted_features_idx]
-        ordered_features = dataset_train[FEATURES].columns[sorted_features_idx]
+        ordered_features = dataset_train[features].columns[sorted_features_idx]
         for feature, importance in zip(ordered_features, sorted_features_importances):
             feature_importances_result[feature] = importance
         return rf_model_best, metrics, feature_importances_result

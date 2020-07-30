@@ -9,8 +9,6 @@ from bicimad.operations.cleaning import clean_weather_data
 from bicimad.operations.aggregation import prepare_daily_data, prepare_hourly_data
 
 
-# Before executing: export PYTHONPATH="/home/irene/dev/keepler-prueba/keepler-bicimad:$PYTHONPATH"
-
 def create_path(home_path: str, relative_path: str) -> str:
     return home_path + '/' + relative_path
 
@@ -29,7 +27,6 @@ def runner(args: Namespace) -> None:
 
 
 def main():
-    # args: --home-path /home/irene/dev/keepler-prueba/keepler-bicimad --sampling-frequency daily
     print("[data-preparation] Starting ... ")
     parser = argparse.ArgumentParser(description='[BiciMad Project] Data Cleaning')
     parser.add_argument('--home-path', type=str, default='.', metavar='H',

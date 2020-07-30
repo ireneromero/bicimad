@@ -6,8 +6,6 @@ from bicimad.operations.cleaning import clean_bikes_data
 from general.operations.dataframe_operations import load_dataframe_from_csv, save_dataframe
 
 
-# Before executing: export PYTHONPATH="/home/irene/dev/keepler-prueba/keepler-bicimad:$PYTHONPATH"
-
 def create_path(home_path: str, relative_path: str) -> str:
     return home_path + '/' + relative_path
 
@@ -19,7 +17,6 @@ def runner(args: Namespace) -> None:
 
 
 def main():
-    # args: --home-path /home/irene/dev/keepler-prueba/keepler-bicimad
     print("[data-cleaning] Starting ... ")
     parser = argparse.ArgumentParser(description='[BiciMad Project] Data Cleaning')
     parser.add_argument('--home-path', type=str, default='.', metavar='H',

@@ -1,12 +1,10 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import numpy as np
-from bicimad.modeling.utils import prepare_data
 from pandas import DataFrame as DataFrame
 from sklearn.metrics import mean_squared_error, r2_score
 
-
+from bicimad.modeling.utils import prepare_data, split_data
 from bicimad.constants.model import FEATURES_DAILY, TARGET, HIDDEN_DIMENSION, TEST_SIZE, EPOCHS
 
 

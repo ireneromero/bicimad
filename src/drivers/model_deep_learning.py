@@ -20,15 +20,21 @@ def runner(args: Namespace) -> None:
     with open(create_path(args.home_path, PATH_RESULTS[args.sampling_frequency]['deep-learning']['metrics']), 'w') as metrics_file: # TODO refactor this as a function
         metrics_file.write(json.dumps(metrics))
 
+
 def main():
     print("[data-modeling][deep-learning] Starting ... ")
     parser = argparse.ArgumentParser(description='[BiciMad Project] Data Forecasting Model')
     parser.add_argument('--home-path', type=str, default='.', metavar='H',
                         help='home path')
     parser.add_argument('--sampling-frequency', type=str, default='daily', metavar='S',
-                        help='Sampling frequency of data: daily/hourly ')
+                        help='Sampling frequency of data: only daily supported ')
 
     args: Namespace = parser.parse_args()
+
+    if (args.sampling_frequency == 'hourly'):
+        print("[data-modeling][deep-learning] Only daily mode supported.")
+        exit()
+
     print("[data-modeling][deep-learning] Setting home path as: {}".format(args.home_path))
     print("[data-modeling][deep-learning] Creating model for {} forecasting".format(args.sampling_frequency))
     runner(args)
@@ -36,6 +42,7 @@ def main():
                                                                                 PATH_RESULTS[args.sampling_frequency]['deep-learning']['model'])))
     print("[data-modeling][deep-learning] Success: metrics stored in {}.".format(create_path(args.home_path,
                                                                                     PATH_RESULTS[args.sampling_frequency]['deep-learning']['metrics'])))
+
 
 if __name__ == '__main__':
     main()

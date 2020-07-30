@@ -16,9 +16,10 @@ def runner(args: Namespace) -> None:
     xgb_model, metrics = xgboost_model(dataset, args.sampling_frequency)
     metrics = {metric_name: str(metric_value) for metric_name, metric_value in metrics.items()}
     # TODO implement saving XGB model in create_path(args.home_path, PATH_RESULTS[args.sampling_frequency]['xgboost']['model']))
-    with open(create_path(args.home_path, PATH_RESULTS[args.sampling_frequency]['xgboost']['metrics']), 'w') as metrics_file: # TODO refactor this as a function
-        print(metrics_file)
+    with open(create_path(args.home_path, PATH_RESULTS[args.sampling_frequency]['xgboost']['metrics']),
+              'w') as metrics_file:  # TODO refactor this as a function
         metrics_file.write(json.dumps(metrics))
+
 
 def main():
     print("[data-modeling][xgboost] Starting ... ")
@@ -33,9 +34,14 @@ def main():
     print("[data-modeling][xgboost] Creating model for {} forecasting".format(args.sampling_frequency))
     runner(args)
     print("[data-modeling][xgboost] Success: RF model stored in {}.".format(create_path(args.home_path,
-                                                                                PATH_RESULTS[args.sampling_frequency]['xgboost']['model'])))
+                                                                                        PATH_RESULTS[
+                                                                                            args.sampling_frequency][
+                                                                                            'xgboost']['model'])))
     print("[data-modeling][xgboost] Success: metrics stored in {}.".format(create_path(args.home_path,
-                                                                                    PATH_RESULTS[args.sampling_frequency]['xgboost']['metrics'])))
+                                                                                       PATH_RESULTS[
+                                                                                           args.sampling_frequency][
+                                                                                           'xgboost']['metrics'])))
+
 
 if __name__ == '__main__':
     main()

@@ -3,7 +3,6 @@ from argparse import Namespace
 import json
 
 from bicimad.constants.paths import PATH_DATASET, PATH_RESULTS
-from bicimad.modeling.deep_learning import deep_learning_model, save_model
 from bicimad.modeling.random_forest import random_forest_model
 from general.operations.dataframe_operations import load_dataframe_from_csv
 
@@ -21,6 +20,7 @@ def runner(args: Namespace) -> None:
         metrics_file.write(json.dumps(metrics))
         metrics_file.write(json.dumps(rf_model.get_params()))
 
+
 def main():
     print("[data-modeling][random-forest] Starting ... ")
     parser = argparse.ArgumentParser(description='[BiciMad Project] Data Forecasting Model')
@@ -37,6 +37,7 @@ def main():
                                                                                 PATH_RESULTS[args.sampling_frequency]['random-forest']['model'])))
     print("[data-modeling][random-forest] Success: metrics stored in {}.".format(create_path(args.home_path,
                                                                                     PATH_RESULTS[args.sampling_frequency]['random-forest']['metrics'])))
+
 
 if __name__ == '__main__':
     main()

@@ -1,12 +1,13 @@
+from pandas import DataFrame as DataFrame
+import numpy as np
+from sklearn.linear_model import LinearRegression
+
 from bicimad.constants.rides import COL_BIKES_DATE, COL_BIKES_DAY_OF_WEEK, COL_BIKES_RIDES, COL_BIKES_HOUR, \
     DAYS_IN_WEEKEND, VALUE_WEEKEND_TRUE, VALUE_WEEKEND_FALSE, COL_BIKES_WEEKEND, COL_BIKES_RIDES_MEAN_WEEKDAY, \
     COL_BIKES_RIDES_MEAN_WEEKDAY_HOUR
 from bicimad.constants.weather import COL_WEATHER_DATE, COL_WEATHER_HOUR_TEMP_MAX, COL_WEATHER_HOUR_TEMP_MIN, \
     COL_WEATHER_TEMP_MAX, COL_WEATHER_TEMP_MIN, COL_WEATHER_WIND_MEAN, COL_WEATHER_RAIN, COL_WEATHER_TEMP_MEAN, \
     SUNRISE_HOUR, SUNSET_HOUR, COL_WEATHER_RAIN_HOURLY, COL_WEATHER_WIND_HOURLY, COL_WEATHER_TEMP_HOURLY
-from pandas import DataFrame as DataFrame
-import numpy as np
-from sklearn.linear_model import LinearRegression
 
 
 def preprocess_rides_per_day(df: DataFrame) -> DataFrame:
@@ -117,9 +118,7 @@ def prepare_hourly_data(df: DataFrame, df_weather: DataFrame) -> DataFrame:
                                                COL_WEATHER_HOUR_TEMP_MAX], axis=1)
 
 
-# TODO REMOVE THIS LINE - IRI get_temperature_simple_v2: Nothing to do
-# TODO REMOVE THIS LINE - Remove old definition (?)
-# TODO REMOVE THIS LINE - Rename definition (?): 'def get_temperature_simple_v2' -> 'def get_temperature_simple'
+# TODO test this code, not yet used
 def get_temperature_simple_v2(hour_to_predict: int,
                               yesterday_temp_min_hour: int, yesterday_temp_min: float, yesterday_temp_max_hour: int,
                               yesterday_temp_max: float,
