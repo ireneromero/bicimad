@@ -80,15 +80,16 @@ MODEL_FEATURES = {
 GRID_SEARCH_PARAMETERS_RF = [
     {
         'n_estimators': [10, 20],
-        'max_depth': [70, 80],
-        'min_samples_leaf': [2, 3],
+        'max_depth': [5, 15, 30],
+        'min_samples_leaf': [2, 5, 10],
     }
 ]
 # -------------------------------------------------- XGB Model ----------------------------------------------------
 GRID_SEARCH_PARAMETERS_XGB = {
     'n_estimators': [100, 200, 500, 1000, 5000],
     'max_depth':[3, 5, 7, 9, 10, 15],
-    'objective':['reg:squarederror']
+    'objective':['reg:squarederror'],
+    'lambda':[0.1, 0.4, 1]
 }
 
 # -------------------------------------------- Deep Learning Model ------------------------------------------------
