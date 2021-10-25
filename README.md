@@ -1,3 +1,3 @@
-# keepler-bicimad
+# bicimad
 
 My attempt at solving the bicimad challenge.
