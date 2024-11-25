@@ -22,7 +22,7 @@ ipykernel @ file:///home/conda/feedstock_root/build_artifacts/ipykernel_15951013
 ipython @ file:///home/conda/feedstock_root/build_artifacts/ipython_1593235467607/work
 ipython-genutils==0.2.0
 jedi @ file:///home/conda/feedstock_root/build_artifacts/jedi_1595018901065/work
-Jinja2==2.11.2
+Jinja2==2.11.3
 joblib @ file:///tmp/build/80754af9/joblib_1594236160679/work
 json5 @ file:///home/conda/feedstock_root/build_artifacts/json5_1591810480056/work
 jsonschema==3.2.0
